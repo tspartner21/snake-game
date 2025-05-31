@@ -9,6 +9,9 @@ let apple = { x: 320, y: 320 };
 let maxCells = 4;
 let score = 0;
 
+// 사운드 객체
+const eatSound = new Audio('https://cdn.pixabay.com/audio/2022/10/16/audio_12b8fae1b7.mp3');
+
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
@@ -51,6 +54,8 @@ function gameLoop() {
   if (head.x === apple.x && head.y === apple.y) {
     maxCells++;
     score++;
+    eatSound.currentTime = 0;
+    eatSound.play();
     apple.x = getRandomInt(0, 20) * grid;
     apple.y = getRandomInt(0, 20) * grid;
   }
@@ -101,6 +106,7 @@ function gameLoop() {
 }
 
 document.addEventListener('keydown', function(e) {
+  // 상하좌우 반대 방향으로는 이동 불가
   if (e.key === 'ArrowLeft' && dx === 0) {
     dx = -grid; dy = 0;
   } else if (e.key === 'ArrowUp' && dy === 0) {
