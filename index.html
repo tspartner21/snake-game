@@ -4,17 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Snake Game</title>
-  <style>
-    body { background: #222; display: flex; justify-content: center; align-items: center; height: 100vh; }
-    canvas { background: #fff; border: 2px solid #333; }
-    h1 { color: #fff; text-align: center; }
-  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-  <div>
-    <h1>Snake Game</h1>
-    <canvas id="game" width="400" height="400"></canvas>
-    <p style="color:white; text-align:center;">방향키로 조작하세요!</p>
+<body class="bg-gradient-to-br from-green-200 to-blue-300 min-h-screen flex flex-col items-center justify-center">
+  <div class="bg-white/80 rounded-xl shadow-lg p-8 flex flex-col items-center">
+    <h1 class="text-4xl font-extrabold text-green-700 mb-4 drop-shadow">🐍 Snake Game</h1>
+    <canvas id="game" width="400" height="400" class="rounded-lg border-4 border-green-400 shadow-lg mb-4"></canvas>
+    <p class="text-gray-700 text-center">방향키로 조작하세요!</p>
+    <div id="score" class="mt-2 text-lg font-bold text-green-800"></div>
   </div>
   <script src="snake.js"></script>
 </body>
