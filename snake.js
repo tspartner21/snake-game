@@ -13,6 +13,30 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
+function drawSnakeCell(cell, idx) {
+  // 머리
+  if (idx === 0) {
+    ctx.fillStyle = '#34d399'; // 연두색 머리
+    ctx.beginPath();
+    ctx.arc(cell.x + grid/2, cell.y + grid/2, grid/2-2, 0, Math.PI*2);
+    ctx.fill();
+    // 눈
+    ctx.fillStyle = '#222';
+    let eyeOffsetX = dx === grid ? 4 : dx === -grid ? -4 : 0;
+    let eyeOffsetY = dy === grid ? 4 : dy === -grid ? -4 : 0;
+    ctx.beginPath();
+    ctx.arc(cell.x + grid/2 + eyeOffsetX, cell.y + grid/2 + eyeOffsetY - 3, 2, 0, Math.PI*2);
+    ctx.arc(cell.x + grid/2 + eyeOffsetX, cell.y + grid/2 + eyeOffsetY + 3, 2, 0, Math.PI*2);
+    ctx.fill();
+  } else {
+    // 몸통
+    ctx.fillStyle = '#6ee7b7';
+    ctx.beginPath();
+    ctx.arc(cell.x + grid/2, cell.y + grid/2, grid/2-3, 0, Math.PI*2);
+    ctx.fill();
+  }
+}
+
 function gameLoop() {
   requestAnimationFrame(gameLoop);
   if (++count < 4) return;
@@ -36,15 +60,17 @@ function gameLoop() {
     snake.pop();
   }
 
-  // 사과 그리기
-  ctx.fillStyle = 'red';
-  ctx.fillRect(apple.x, apple.y, grid-2, grid-2);
+  // 사과 그리기 (동글동글)
+  ctx.fillStyle = '#f87171';
+  ctx.beginPath();
+  ctx.arc(apple.x + grid/2, apple.y + grid/2, grid/2-2, 0, Math.PI*2);
+  ctx.fill();
 
-  // 뱀 그리기
-  ctx.fillStyle = 'lime';
+  // 뱀 그리기 (머리/몸/눈)
+  snake.forEach(drawSnakeCell);
+
+  // 자기 몸에 부딪힘
   snake.forEach((cell, idx) => {
-    ctx.fillRect(cell.x, cell.y, grid-2, grid-2);
-    // 자기 몸에 부딪힘
     for (let i = idx + 1; i < snake.length; i++) {
       if (cell.x === snake[i].x && cell.y === snake[i].y) {
         // 게임 오버
@@ -70,10 +96,8 @@ function gameLoop() {
     apple.y = getRandomInt(0, 20) * grid;
   }
 
-  // 점수 표시
-  ctx.fillStyle = 'black';
-  ctx.font = '16px Arial';
-  ctx.fillText('Score: ' + score, 10, 390);
+  // 점수 표시 (Tailwind로 별도 div에 표시)
+  document.getElementById('score').textContent = 'Score: ' + score;
 }
 
 document.addEventListener('keydown', function(e) {
